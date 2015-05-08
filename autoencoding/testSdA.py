@@ -26,7 +26,7 @@ def loadDataset():
     ext = '.jpg'
 
     dataset = []
-    for file in range(1, 800):
+    for file in range(1, 801):
  
         img = cv2.imread(path + str(file) + ext)
         img = cv2.resize(img, (28, 28), interpolation = cv2.INTER_AREA)
@@ -48,7 +48,7 @@ def loadTestset():
     path = "/home/rik/jpg/"
     ext = '.jpg'
     dataset = []
-    for file in range(1, 800):
+    for file in range(1, 801):
  
         img = cv2.imread(path + str(file) + ext)
         img = cv2.resize(img, (28, 28), interpolation = cv2.INTER_AREA)
@@ -64,9 +64,9 @@ def loadTestset():
 if __name__ == "__main__":
    
     pretraining_epochs = 1000
-    pretrain_lr = 0.01
+    pretrain_lr = 0.1
     train_set_x = loadDataset()
-    batch_size = 50
+    batch_size = 20
     
     n_train_batches = train_set_x.get_value(borrow=True).shape[0] / batch_size
     #theano defines
@@ -78,8 +78,9 @@ if __name__ == "__main__":
     theano_rng = RandomStreams(rng.randint(2 ** 30))
 
     sda = SdA(numpy_rng=rng,
+        theano_rng=theano_rng,
         n_ins=28 * 28 * 3,
-        hidden_layers_sizes=[1000, 500, 20],
+        hidden_layers_sizes=[1000, 1000],
         n_outs=1
         )
         
