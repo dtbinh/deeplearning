@@ -278,7 +278,7 @@ class DBN(object):
 
 def test_DBN(finetune_lr=0.1, pretraining_epochs=100,
              pretrain_lr=0.01, k=1, training_epochs=1000,
-             dataset='mnist.pkl.gz', batch_size=10):
+             dataset='mnist.pkl.gz', batch_size=100):
     """
     Demonstrates how to train and test a Deep Belief Network.
 

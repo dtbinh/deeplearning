@@ -236,6 +236,11 @@ def load_data(dataset):
         # lets ous get around this issue
         return shared_x, T.cast(shared_y, 'int32')
 
+
+    (x,y) = train_set
+    print len(x)
+    print y[0]
+    print len(y)
     test_set_x, test_set_y = shared_dataset(test_set)
     valid_set_x, valid_set_y = shared_dataset(valid_set)
     train_set_x, train_set_y = shared_dataset(train_set)

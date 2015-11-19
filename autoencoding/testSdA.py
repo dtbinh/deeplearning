@@ -22,12 +22,13 @@ except ImportError:
 
 def loadDataset():
     
-    path = "/home/rik/jpg/"
+    path = "/home/rik/objects/fanta/"
     ext = '.jpg'
 
     dataset = []
-    for file in range(1, 801):
+    for file in range(1, 20):
  
+        print path + str(file) + ext
         img = cv2.imread(path + str(file) + ext)
         img = cv2.resize(img, (28, 28), interpolation = cv2.INTER_AREA)
         image = np.asarray(img, dtype = np.float32)
@@ -40,15 +41,16 @@ def loadDataset():
     print "Number of images: ", len(dataset)
    
     dataset = np.asarray(dataset, dtype = np.float32)
+    print dataset
     train_set_x = theano.shared(np.asarray(dataset, dtype=theano.config.floatX), borrow=True)
     
     return train_set_x      
    
 def loadTestset():
-    path = "/home/rik/jpg/"
+    path = "/home/rik/objects/fanta/"
     ext = '.jpg'
     dataset = []
-    for file in range(1, 801):
+    for file in range(1, 20):
  
         img = cv2.imread(path + str(file) + ext)
         img = cv2.resize(img, (28, 28), interpolation = cv2.INTER_AREA)
@@ -99,8 +101,8 @@ if __name__ == "__main__":
                 c.append(pretraining_fns[i](index=batch_index,
                          corruption=corruption_levels[i],
                          lr=pretrain_lr))
-            print 'Pre-training layer %i, epoch %d, cost ' % (i, epoch),
-            print np.mean(c)
+      #      print 'Pre-training layer %i, epoch %d, cost ' % (i, epoch),
+      #      print np.mean(c)
                 
    # hid = da.get_hidden_values(x)
    # hidden = theano.function([x], hid) 
