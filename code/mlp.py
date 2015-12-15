@@ -29,6 +29,7 @@ import numpy
 
 import theano
 import theano.tensor as T
+from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
 
 
 from logistic_sgd import LogisticRegression, load_data
@@ -36,8 +37,25 @@ from logistic_sgd import LogisticRegression, load_data
 
 # start-snippet-1
 class HiddenLayer(object):
-    def __init__(self, rng, input, n_in, n_out, W=None, b=None,
-                 activation=T.tanh):
+    
+    rng = numpy.random.RandomState(1234)
+    srng = RandomStreams(rng.randint(999999))
+    
+    def drop(self, input, p=0.5, rng=rng): 
+        """
+        :type input: numpy.array
+        :param input: layer or weight matrix on which dropout resp. dropconnect is applied
+        
+        :type p: float or double between 0. and 1. 
+        :param p: p probability of NOT dropping out a unit or connection, therefore (1.-p) is the drop rate.
+        
+        """   
+            
+        mask = self.srng.binomial(n=1, p=p, size=input.shape, dtype=theano.config.floatX)
+        return input * mask
+    
+    def __init__(self, rng, input, is_train, n_in, n_out, W=None, b=None,
+                 activation=T.tanh, p=0.5):
         """
         Typical hidden layer of a MLP: units are fully-connected and have
         sigmoidal activation function. Weight matrix W is of shape (n_in,n_out)
@@ -100,10 +118,13 @@ class HiddenLayer(object):
         self.b = b
 
         lin_output = T.dot(input, self.W) + self.b
-        self.output = (
+        output = (
             lin_output if activation is None
             else activation(lin_output)
         )
+        
+        train_output = self.drop(numpy.cast[theano.config.floatX](1./p) * output, p=p)
+        self.output = T.switch(T.neq(is_train, 0), train_output, output)
         # parameters of the model
         self.params = [self.W, self.b]
 
@@ -222,7 +243,7 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
    """
     datasets = load_data(dataset)
-
+    
     train_set_x, train_set_y = datasets[0]
     valid_set_x, valid_set_y = datasets[1]
     test_set_x, test_set_y = datasets[2]

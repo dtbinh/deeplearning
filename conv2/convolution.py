@@ -10,13 +10,32 @@ import theano.tensor as T
 from theano.tensor.signal import downsample
 from theano.tensor.nnet import conv
 
+from theano.sandbox.rng_mrg import MRG_RandomStreams as RandomStreams
+
 from logistic_sgd import LogisticRegression
 from mlp import HiddenLayer
+from numpy import broadcast
 
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
+    
+    rng = np.random.RandomState()
+    srng = RandomStreams(rng.randint(999999))
+    
+    def drop(self, input, p=0.5, rng=rng): 
+        """
+        :type input: numpy.array
+        :param input: layer or weight matrix on which dropout resp. dropconnect is applied
+        
+        :type p: float or double between 0. and 1. 
+        :param p: p probability of NOT dropping out a unit or connection, therefore (1.-p) is the drop rate.
+        
+        """   
+            
+        mask = self.srng.binomial(n=1, p=p, size=input.shape, dtype=theano.config.floatX)
+        return input * mask
 
-    def __init__(self, rng, input, filter_shape, image_shape, poolsize=(2, 2)):
+    def __init__(self, rng, input, is_train, filter_shape, image_shape, poolsize=(2, 2), p=0.5):
         """
         Allocate a LeNetConvPoolLayer with shared variable internal parameters.
 
@@ -69,20 +88,29 @@ class LeNetConvPoolLayer(object):
             filters=self.W,
             filter_shape=filter_shape,
             image_shape=image_shape
-        )
+        ) 
+        
+        conv_out_train = self.drop(np.cast[theano.config.floatX](1./p) * conv_out, p=p)        
+     #   out = conv_out;
+        out =  T.switch(T.neq(is_train, 0), conv_out_train, conv_out)
 
         # downsample each feature map individually, using maxpooling
         pooled_out = downsample.max_pool_2d(
-            input=conv_out,
+            input=out,
             ds=poolsize,
             ignore_border=True
         )
+        
+     #   pooled_out_train = self.drop(np.cast[theano.config.floatX](1./p) * pooled_out, p=p)
+     #   pooled_out_drop = T.switch(T.neq(is_train, 0), pooled_out_train, pooled_out)
+        pooled_out_drop = pooled_out
 
         # add the bias term. Since the bias is a vector (1D array), we first
         # reshape it to a tensor of shape (1, n_filters, 1, 1). Each bias will
         # thus be broadcasted across mini-batches and feature map
         # width & height
-        self.output = T.tanh(pooled_out + self.b.dimshuffle('x', 0, 'x', 'x'))
+        self.output = T.tanh(pooled_out_drop + self.b.dimshuffle('x', 0, 'x', 'x'))
+        
 
         # store parameters of this layer
         self.params = [self.W, self.b]
@@ -117,35 +145,12 @@ def shared_dataset(data_xy, borrow=True):
 def load_train_data(path):
     images = np.load(path + 'trainImages.npy')
     labelNames = np.load(path + 'trainLabels.npy')
-    
+    #print labelNames 
     labels = []
     
     for x in labelNames:
-        if x == "aaDrink":
-            l = 0
-        elif x == "cherryCoke":
-            l = 1
-        elif x == "chickenSoup":
-            l = 2
-        elif x == "cocaColaLight":
-            l = 3
-        elif x == "fanta":
-            l = 4
-        elif x == "hertogJan":
-            l = 5
-        elif x == "pringles":
-            l = 6
-        elif x == "redBull":
-            l = 7
-        elif x == "shampoo":
-            l = 8
-        elif x == "yellowContainer":
-            l = 9
-        else:
-            print 'object has not been assigned a label!'
-        
-        labels.append(l)
-        
+        labels.append(x)
+       
     return images, labels
 
 def load_valid_data(path):
@@ -155,48 +160,37 @@ def load_valid_data(path):
     labels = []
     
     for x in labelNames:
-        if x == "aaDrink":
-            l = 0
-        elif x == "cherryCoke":
-            l = 1
-        elif x == "chickenSoup":
-            l = 2
-        elif x == "cocaColaLight":
-            l = 3
-        elif x == "fanta":
-            l = 4
-        elif x == "hertogJan":
-            l = 5
-        elif x == "pringles":
-            l = 6
-        elif x == "redBull":
-            l = 7
-        elif x == "shampoo":
-            l = 8
-        elif x == "yellowContainer":
-            l = 9
-        else:
-            print 'object has not been assigned a label!'
-        
-        labels.append(l)
-        
-    print images[0]
+        labels.append(x)
+
     return images, labels
 
 if __name__ == "__main__":
     
-    batch_size = 20
-    learning_rate = 0.01
-    nkerns=[512, 1024, 2048]
-    n_epochs=10000
+    batch_size = 300
+    lr = 0.1   # starting learning rate
+    lowest_lr = 0.001
+    lr_decay_rate = 0.95
+    initial_momentum = 0.5  # starting momentum
+    momentum_decay_rate = 0.98
+    p = 0.5     # prop. of NOT dropping a neuron
+    nkerns=[16, 20, 20]
+    n_epochs=1500
     
-    scaleSize = 56
+    is_train = T.iscalar('is_train')
     
-    path = "/home/rik/deeplearning/conv/"
+    learning_rate = theano.shared(np.asarray(lr,
+        dtype=theano.config.floatX))
+    
+    assert initial_momentum >= 0. and initial_momentum < 1.
+    momentum =theano.shared(np.cast[theano.config.floatX](initial_momentum), name='momentum')
+    
+    
+    scaleSize = 32
+    
+    path = "/home/rik/deeplearning/conv2/"
     train_images, train_labels = load_train_data(path)
     valid_images, valid_labels = load_valid_data(path)
-
-        
+      
     rng = np.random.RandomState(np.random.randint(2*10))
 
     train_set_x, train_set_y = shared_dataset((train_images, train_labels))
@@ -227,7 +221,7 @@ if __name__ == "__main__":
     # Reshape matrix of rasterized images of shape (batch_size, 28 * 28)
     # to a 4D tensor, compatible with our LeNetConvPoolLayer
     # (28, 28) is the size of MNIST images.
-    layer0_input = x.reshape((batch_size, 3, scaleSize, scaleSize))
+    layer0_input = x.reshape((-1, 3, scaleSize, scaleSize))
 
     # Construct the first convolutional pooling layer:
     # filtering reduces the image size to (28-5+1 , 28-5+1) = (24, 24)
@@ -237,8 +231,10 @@ if __name__ == "__main__":
         rng,
         input=layer0_input,
         image_shape=(batch_size, 3, scaleSize, scaleSize),
-        filter_shape=(nkerns[0], 3, 3, 3),
-        poolsize=(2, 2)
+        filter_shape=(nkerns[0], 3, 5, 5),
+        poolsize=(2, 2),
+        is_train=is_train,
+        p=p
     )
 
     # Construct the second convolutional pooling layer
@@ -246,57 +242,85 @@ if __name__ == "__main__":
     # maxpooling reduces this further to (8/2, 8/2) = (4, 4)
     # 4D output tensor is thus of shape (batch_size, nkerns[1], 4, 4)
     
-    scale2Size = ((scaleSize - 2) / 2)
+    scale2Size = ((scaleSize - 4) / 2)
     
     layer1 = LeNetConvPoolLayer(
         rng,
         input=layer0.output,
         image_shape=(batch_size, nkerns[0], scale2Size, scale2Size),
-        filter_shape=(nkerns[1], nkerns[0], 3, 3),
-        poolsize=(2, 2)
+        filter_shape=(nkerns[1], nkerns[0], 5, 5),
+        poolsize=(2, 2),
+        is_train=is_train,
+        p=p
     )
     
-    scale3Size = ((scale2Size - 2) / 2)
+    scale3Size = ((scale2Size - 4) / 2)
     
+    '''
     layer1_extra = LeNetConvPoolLayer(
         rng,
         input=layer1.output,
         image_shape=(batch_size, nkerns[1], scale3Size, scale3Size),
-        filter_shape=(nkerns[2], nkerns[1], 3, 3),
-        poolsize=(2, 2)
+        filter_shape=(nkerns[2], nkerns[1], 5, 5),
+        poolsize=(2, 2),
+        is_train=is_train,
+        p=p
     )
+    '''
         # the HiddenLayer being fully-connected, it operates on 2D matrices of
     # shape (batch_size, num_pixels) (i.e matrix of rasterized images).
     # This will generate a matrix of shape (batch_size, nkerns[1] * 4 * 4),
     # or (500, 50 * 4 * 4) = (500, 800) with the default values.
-    layer2_input = layer1_extra.output.flatten(2)
+ #   layer2_input = layer1_extra.output.flatten(2)
+    layer2_input = layer1.output.flatten(2)
 
     # construct a fully-connected sigmoidal layer
     layer2 = HiddenLayer(
         rng,
         input=layer2_input,
-        n_in=nkerns[2] * np.ceil((scale3Size - 2)/2) * np.ceil((scale3Size - 2)/2),
-        n_out=500,
-        activation=T.tanh
+        n_in=nkerns[1] * scale3Size * scale3Size,
+        n_out=4000,
+        activation=T.nnet.relu,
+        is_train=is_train,
+        p=p
     )
     
-
+    layer22 = HiddenLayer(
+        rng,
+        input=layer2.output,
+        n_in=4000,
+        n_out=4000,
+        activation=T.tanh,
+        is_train=is_train,
+        p=p
+    )
+    
+    layer222 = HiddenLayer(
+        rng,
+        input=layer22.output,
+        n_in=4000,
+        n_out=100,
+        activation=T.tanh,
+        is_train=is_train,
+        p=p
+    )
+    
+   
     # classify the values of the fully-connected sigmoidal layer
-    layer3 = LogisticRegression(input=layer2.output, n_in=500, n_out=10)
+    layer3 = LogisticRegression(input=layer222.output, n_in=100, n_out=10)
 
     
     # the cost we minimize during training is the NLL of the model
     cost = layer3.negative_log_likelihood(y)
     
-    
-
     # create a function to compute the mistakes that are made by the model
     test_model = theano.function(
         [index],
         layer3.errors(y),
         givens={
             x: test_set_x[index * batch_size: (index + 1) * batch_size],
-            y: test_set_y[index * batch_size: (index + 1) * batch_size]
+            y: test_set_y[index * batch_size: (index + 1) * batch_size],
+            is_train: np.cast['int32'](0)
         }
     )
 
@@ -305,7 +329,8 @@ if __name__ == "__main__":
         layer3.errors(y),
         givens={
             x: valid_set_x[index * batch_size: (index + 1) * batch_size],
-            y: valid_set_y[index * batch_size: (index + 1) * batch_size]
+            y: valid_set_y[index * batch_size: (index + 1) * batch_size],
+            is_train: np.cast['int32'](0)
         }
     )
 
@@ -320,10 +345,20 @@ if __name__ == "__main__":
     # manually create an update rule for each model parameter. We thus
     # create the updates list by automatically looping over all
     # (params[i], grads[i]) pairs.
+    
+    '''
     updates = [
         (param_i, param_i - learning_rate * grad_i)
         for param_i, grad_i in zip(params, grads)
     ]
+    '''
+    
+    updates = []
+    for param in  params:
+        param_update = theano.shared(param.get_value()*np.cast[theano.config.floatX](0.))    
+        updates.append((param, param - learning_rate*param_update))
+        updates.append((param_update, momentum*param_update + (np.cast[theano.config.floatX](1.) - momentum)*T.grad(cost, param)))  
+    
 
     train_model = theano.function(
         [index],
@@ -331,7 +366,8 @@ if __name__ == "__main__":
         updates=updates,
         givens={
             x: train_set_x[index * batch_size: (index + 1) * batch_size],
-            y: train_set_y[index * batch_size: (index + 1) * batch_size]
+            y: train_set_y[index * batch_size: (index + 1) * batch_size],
+            is_train: np.cast['int32'](1)
         }
     )
     # end-snippet-1
@@ -360,14 +396,15 @@ if __name__ == "__main__":
     epoch = 0
     done_looping = False
 
+    
     while (epoch < n_epochs) and (not done_looping):
-        epoch = epoch + 1
+        epoch = epoch + 1        
+                
         for minibatch_index in xrange(n_train_batches):
 
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
-          #  if iter % 1000 == 0:
-          #      print 'training @ iter = ', iter
+
             cost_ij = train_model(minibatch_index)
 
             if (iter + 1) % validation_frequency == 0:
@@ -377,11 +414,26 @@ if __name__ == "__main__":
                                      in xrange(n_valid_batches)]
                 this_validation_loss = np.mean(validation_losses)
                 if epoch%10 == 0:
+                    print "momentum: ", momentum.get_value()
+                    print "learing rate: ", learning_rate.get_value()
                     print('epoch %i, minibatch %i/%i, validation error %f %%' %
                           (epoch, minibatch_index + 1, n_train_batches,
                            this_validation_loss * 100.))
 
-                '''
+        if momentum.get_value() < 0.99:
+            new_momentum = 1. - (1. - momentum.get_value()) * momentum_decay_rate
+            momentum.set_value(np.cast[theano.config.floatX](new_momentum))
+        
+        if (learning_rate.get_value() > lowest_lr):
+            new_learning_rate = learning_rate.get_value() * lr_decay_rate
+            
+            if new_learning_rate < lowest_lr:
+                new_learning_rate = lowest_lr
+            
+            learning_rate.set_value(np.cast[theano.config.floatX](new_learning_rate))
+         
+                
+            '''
                 # if we got the best validation score until now
                 if this_validation_loss < best_validation_loss:
 
@@ -409,7 +461,7 @@ if __name__ == "__main__":
             if patience <= iter:
                 done_looping = True
                 break
-                '''
+            '''
 
     end_time = time.clock()
     print ' ran for %.2fm' % ((end_time - start_time) / 60.)
