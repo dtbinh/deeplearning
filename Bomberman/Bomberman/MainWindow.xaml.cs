@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using FANNCSharp.Float;
+using DataType = System.Single;
+
+
 namespace Bomberman
 {
     /// <summary>
