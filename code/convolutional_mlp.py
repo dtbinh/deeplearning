@@ -29,8 +29,11 @@ import numpy
 
 import theano
 import theano.tensor as T
-from theano.tensor.signal import downsample
-from theano.tensor.nnet import conv
+#from theano.tensor.signal import downsample
+#from theano.tensor.nnet import conv
+from theano.sandbox.cuda.basic_ops import gpu_contiguous
+from pylearn2.sandbox.cuda_convnet.filter_acts import FilterActs
+from pylearn2.sandbox.cuda_convnet.pool import MaxPool
 
 from logistic_sgd import LogisticRegression, load_data
 from mlp import HiddenLayer
@@ -87,6 +90,7 @@ class LeNetConvPoolLayer(object):
         self.b = theano.shared(value=b_values, borrow=True)
 
         # convolve input feature maps with filters
+        '''
         conv_out = conv.conv2d(
             input=input,
             filters=self.W,
@@ -100,6 +104,18 @@ class LeNetConvPoolLayer(object):
             ds=poolsize,
             ignore_border=True
         )
+        '''
+        input_shuffled = input.dimshuffle(1, 2, 3, 0) # bc01 to c01b
+        filters_shuffled = self.W.dimshuffle(1, 2, 3, 0) # bc01 to c01b
+        conv_op = FilterActs(stride=1, partial_sum=1)
+        contiguous_input = gpu_contiguous(input_shuffled)
+        contiguous_filters = gpu_contiguous(filters_shuffled)
+        conv_out_shuffled = conv_op(contiguous_input, contiguous_filters)
+        
+        pool_op = MaxPool(ds=poolsize[0], stride=poolsize[0])
+        pooled_out_shuffled = pool_op(conv_out_shuffled)
+        pooled_out = pooled_out_shuffled.dimshuffle(3, 0, 1, 2) # c01b to bc01
+        
 
         # add the bias term. Since the bias is a vector (1D array), we first
         # reshape it to a tensor of shape (1, n_filters, 1, 1). Each bias will
@@ -111,9 +127,9 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 
-def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
+def evaluate_lenet5(learning_rate=0.1, n_epochs=50,
                     dataset='mnist.pkl.gz',
-                    nkerns=[20, 50], batch_size=500):
+                    nkerns=[32, 64], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float

@@ -5,7 +5,7 @@ import cv2
 path = "/home/rik/objects/training/"
 objects = os.listdir(path)
 
-scaleSize = 56
+scaleSize = 32
 dbImages = []
 dbLabels = []
 
@@ -14,23 +14,22 @@ for segment in objects:
     
     for f in files:
         image = cv2.imread(path + segment + "/" + f)
-    #    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image = cv2.resize(image, (scaleSize, scaleSize))
-        
+        r,g,b = cv2.split(image)
+        imgNew = [r, g, b]
     #    cv2.imshow("image", image)
     #    cv2.waitKey(1)
-        image = np.asarray(image, dtype=np.float32)
+        image = np.asarray(imgNew, dtype=np.float32)
         image /= 255 # normalize images
-        
         image = np.reshape(image, (scaleSize * scaleSize * 3))
         
         dbImages.append(image)
         dbLabels.append(segment)
         
-    
+  
        
-np.save('/home/rik/deeplearning/conv/trainImages.npy', dbImages)
-np.save('/home/rik/deeplearning/conv/trainLabels.npy', dbLabels)
+np.save('/home/rik/deeplearning/conv2/trainImages.npy', dbImages)
+np.save('/home/rik/deeplearning/conv2/trainLabels.npy', dbLabels)
 
 print len(dbImages), 'training images' 
 
@@ -46,14 +45,13 @@ for segment in objects:
     
     for f in files:
         image = cv2.imread(path + segment + "/" + f)
-     #   image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image = cv2.resize(image, (scaleSize, scaleSize))
-        
+        r,g,b = cv2.split(image)
+        imgNew = [r, g, b]
     #    cv2.imshow("image", image)
     #    cv2.waitKey(1)
-        image = np.asarray(image, dtype=np.float32)
+        image = np.asarray(imgNew, dtype=np.float32)
         image /= 255 # normalize images
-        
         image = np.reshape(image, (scaleSize * scaleSize * 3))
         
         dbImages.append(image)
@@ -61,7 +59,7 @@ for segment in objects:
         
     
        
-np.save('/home/rik/deeplearning/conv/validImages.npy', dbImages)
-np.save('/home/rik/deeplearning/conv/validLabels.npy', dbLabels)
+np.save('/home/rik/deeplearning/conv2/validImages.npy', dbImages)
+np.save('/home/rik/deeplearning/conv2/validLabels.npy', dbLabels)
 
 print len(dbImages), 'validation images' 

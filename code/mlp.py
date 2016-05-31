@@ -38,8 +38,8 @@ from logistic_sgd import LogisticRegression, load_data
 # start-snippet-1
 class HiddenLayer(object):
     
-    rng = numpy.random.RandomState(1234)
-    srng = RandomStreams(rng.randint(999999))
+    rng = numpy.random.RandomState()
+    srng = RandomStreams(rng.randint(9999999))
     
     def drop(self, input, p=0.5, rng=rng): 
         """
@@ -96,10 +96,12 @@ class HiddenLayer(object):
         #        compared to tanh
         #        We have no info for other function, so we use the same as
         #        tanh.
+        
+        
         if W is None:
             W_values = numpy.asarray(
                 rng.uniform(
-                    low=-numpy.sqrt(6. / (n_in + n_out)),
+                   low=-numpy.sqrt(6. / (n_in + n_out)),
                     high=numpy.sqrt(6. / (n_in + n_out)),
                     size=(n_in, n_out)
                 ),
@@ -124,7 +126,9 @@ class HiddenLayer(object):
         )
         
         train_output = self.drop(numpy.cast[theano.config.floatX](1./p) * output, p=p)
+       
         self.output = T.switch(T.neq(is_train, 0), train_output, output)
+     #   self.output= output
         # parameters of the model
         self.params = [self.W, self.b]
 

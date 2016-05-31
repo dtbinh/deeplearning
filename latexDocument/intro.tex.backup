@@ -1,0 +1,13 @@
+\section{Introduction}
+Service robots are getting more popular because of the availability of small robots such as vacuum cleaners and lawn mowers.
+However, these small service robots have limited functionality. In the Robocup@Home[REF] and  \\ RoCKIn@Home[REF] competitions, the goal is to benchmark service robots with various tasks. 
+These service robots must be able to navigate, recognize speech, be able to detect and manipulate objects, whilst also making sure to not damage itself or cause damage to its surroundings,
+including people and other robots. These high demands of functionality require expensive sensors and actuators. \\
+A basic functionality of a robot is localization. A service robot needs to know its location with high precision to be able to navigate correctly but also to avoid collisions. Robots mostly use 2D laser range finders for this task,
+and the downside of these lasers is that they are very expensive, cheap 2D lasers costs hundreds of Euros, and the price increases exponentially when more distance and precision is required. For a service robot that needs
+to operate safely, a laser in the price range of minimally a couple thousand Euros is required. Although research has been done to use a fairly inexpensive sensor, 
+like the Primesense sensor[Foot note] found in the Microsoft Kinect and ASUS Xtion devices, the results are either slow[REF], approximately half a second per frame, or also requires expensive hardware[REF] to get real time performance. \\
+In this report we look at the localization part of the navigation task, by using a cheap RGB sensor and neural networks to replace the expensive laser. Only during the training stage expensive hardware is required, location values are 
+provided by the traditional mapping and localization methods such as Adaptive Monte Carlo Localization (AMCL), and Grid Mapping [REFS], and the training of the network requires a significant amount of computations which can be done offline
+and can be outsourced to cloud computing centers (e.g. Amazon Web Services). The trained network can easily run on inexpensive hardware that is already controlling the robot.  
+
