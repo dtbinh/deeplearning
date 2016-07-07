@@ -1,0 +1,3 @@
+\section{Research question}
+The goal of this project is to create a neural network that can control a robotic arm so that it is able to grasp and object that it has seen by using a (3D) camera. 
+The main algorithm for learning to control the arm will be the CACLA algoritm, we will use convulutional neural network (CNN) for the perception of objects that the arm needs to grasp. 
