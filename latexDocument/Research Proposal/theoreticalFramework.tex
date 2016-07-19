@@ -1,12 +1,16 @@
 \section{Theoretical framework}
 Reinforcement learning is an area in machine learning in which an agent needs to take actions in an environment which provides the highest reward for that agent. The environment of a reinforcement learning problem
-is described as a Markov desicion process (MDP). A MDP consists out of States, Actions, and Rewards ** NEEDS BETTER EXPLANATION ****. The goal is to find a policy that will provide the best action based on the current state. 
+is described as a Markov decision process (MDP). A MDP consists out of States, Actions, and Rewards ** NEEDS BETTER EXPLANATION ****. The goal is to find a policy that will provide the best action based on the current state. 
 For this purpose we will use the CACLA algorithm. CACLA is created to handle the continues action space, which is needed to control a robotic arm. An action in this case is the velocity of a single actuator (joint) of the 
-robotic arm, which can move with different speeds. 
+robotic arm, which can move with different speeds. CACLA is a model-free algorithm, meaning that the agent does not need know about the environment beforehand, it can therefore be used in all sorts of problems, like controlling a 
+robotic arm. *** NEEDS MORE CACLA EXPLANATION? ***. 
+To improve learning extra parameters will be added to the CACLA algorithm to test their performance. For example we can look at the insights from the Deep Q Network (DQN)[REF]. DQN shows for example that make it is possible for 
+large, non-linear networks to become robust and stable by training networks off-policy by using samples from a replay buffer to minimize the correlations between samples. In [PAPER TO GOOGLE RL] they make use of 
+batch normalization [REF], a recent advance in deep learning. Also methods like dropout [REF] to reduce overfitting will be tested. 
 
  
  %- explain RL *
- %- explain CACLA
+ %- explain CACLA, Mention model free
  %- parameters
  %- DeepLearning
  %- explain CNN
