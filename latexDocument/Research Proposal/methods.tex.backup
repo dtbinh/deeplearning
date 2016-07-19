@@ -1,0 +1,6 @@
+\section{Methods}
+Reinforcement learning problems are often solved within a discrete action space. But to control a robotic arm continues actions are required. 
+
+
+%The main method for reinforcement learning for the control of the arm will be the CACLA algorithm. The main method for the perception part will be CNN. 
+%The reason to use CALCA is because to control the arm continues actions are needed, instead of distrete actions. 
