@@ -1,10 +1,18 @@
 \section{Research question}
-The goal of this project is to create a neural network that can control a robotic arm so that it is able to grasp and object that it has seen by using a (3D) camera. 
+The goal of this project is to create a neural network that can control a robotic arm so that it is able to grasp an object that it has seen by using a (3D) camera. 
 The main algorithm for learning to control the arm will be the CACLA algorithm, we will use a convolutional neural network (CNN) for the perception of objects that the arm needs to grasp. 
 The project will be divided into two aspects, control and perception. For the control part the focus will be on creating a neural network that can grasp an object given by an operator manually. The perception part 
 will focus on the detection of an object and extracting the location and orientation needed to grasp the object. The final stage is to make the control part depended on the perception part so it can autonomously grasp objects
 that are seen by the camera. An other aspect in the research project is to look at different architectures. Instead of having one neural network that controls that arm, perhaps a better result or faster training can be 
 achieved by having multiple networks where each network controls a single joint or smaller groups of joints, a network used for approaching the object and one network used for the actual grasping part, separate the CNN and 
 the control neural network or combine both CNN and control neural network into one big neural network. \\
-The main research question is: Is it possible for a robotic arm to grasp an object by using reinforcement learning? \\
-The sub-question: Which architectures results in the best performance? 
+We will also look at different arm models to see if the design of an arm influences the training speed and/or results, although this part can only be tested in simulation and not in the real world.  \\
+\textbf{The main research question}:    
+\begin{itemize}
+  \item  Is it possible for a robotic arm to grasp an object by using reinforcement learning?
+\end{itemize}                                
+\textbf{The sub-questions}: 
+\begin{itemize}
+  \item Which architecture results in the best performance? 
+  \item Does the design of a robotic arm influence the training of the control network?
+\end{itemize}

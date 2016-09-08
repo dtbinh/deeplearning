@@ -1,0 +1,85 @@
+\begin{thebibliography}{10}
+
+\bibitem{robocup}
+T.~Wisspeintner, T.~Van Der~Zant, L.~Iocchi, and S.~Schiffer, ``Robocup@ home:
+  Scientific competition and benchmarking for domestic service robots,'' {\em
+  Interaction Studies}, vol.~10, no.~3, pp.~392--426, 2009.
+
+\bibitem{rockin}
+S.~Schneider, F.~Hegger, A.~Ahmad, I.~Awaad, F.~Amigoni, J.~Berghofer,
+  R.~Bischoff, A.~Bonarini, R.~Dwiputra, G.~Fontana, {\em et~al.}, ``The
+  rockin@ home challenge,'' in {\em ISR/Robotik 2014; 41st International
+  Symposium on Robotics; Proceedings of}, pp.~1--7, VDE, 2014.
+
+\bibitem{ompl}
+I.~A. {\c{S}}ucan, M.~Moll, and L.~E. Kavraki, ``The {O}pen {M}otion {P}lanning
+  {L}ibrary,'' {\em {IEEE} Robotics \& Automation Magazine}, vol.~19,
+  pp.~72--82, December 2012.
+\newblock http://ompl.kavrakilab.org.
+
+\bibitem{cnn}
+A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton, ``Imagenet classification with
+  deep convolutional neural networks,'' in {\em Advances in neural information
+  processing systems}, pp.~1097--1105, 2012.
+
+\bibitem{markov}
+R.~Bellman, ``A markovian decision process,'' {\em Indiana Univ. Math. J.},
+  vol.~6, pp.~679--684, 1957.
+
+\bibitem{van2007reinforcement}
+H.~Van~Hasselt and M.~A. Wiering, ``Reinforcement learning in continuous action
+  spaces,'' in {\em 2007 IEEE International Symposium on Approximate Dynamic
+  Programming and Reinforcement Learning}, pp.~272--279, IEEE, 2007.
+
+\bibitem{mnih2015human}
+V.~Mnih, K.~Kavukcuoglu, D.~Silver, A.~A. Rusu, J.~Veness, M.~G. Bellemare,
+  A.~Graves, M.~Riedmiller, A.~K. Fidjeland, G.~Ostrovski, {\em et~al.},
+  ``Human-level control through deep reinforcement learning,'' {\em Nature},
+  vol.~518, no.~7540, pp.~529--533, 2015.
+
+\bibitem{lillicrap2015continuous}
+T.~P. Lillicrap, J.~J. Hunt, A.~Pritzel, N.~Heess, T.~Erez, Y.~Tassa,
+  D.~Silver, and D.~Wierstra, ``Continuous control with deep reinforcement
+  learning,'' {\em arXiv preprint arXiv:1509.02971}, 2015.
+
+\bibitem{ioffe2015batch}
+S.~Ioffe and C.~Szegedy, ``Batch normalization: Accelerating deep network
+  training by reducing internal covariate shift,'' {\em arXiv preprint
+  arXiv:1502.03167}, 2015.
+
+\bibitem{srivastava2014dropout}
+N.~Srivastava, G.~E. Hinton, A.~Krizhevsky, I.~Sutskever, and R.~Salakhutdinov,
+  ``Dropout: a simple way to prevent neural networks from overfitting.,'' {\em
+  Journal of Machine Learning Research}, vol.~15, no.~1, pp.~1929--1958, 2014.
+
+\bibitem{sainath2015deep}
+T.~N. Sainath, B.~Kingsbury, G.~Saon, H.~Soltau, A.-r. Mohamed, G.~Dahl, and
+  B.~Ramabhadran, ``Deep convolutional neural networks for large-scale speech
+  tasks,'' {\em Neural Networks}, vol.~64, pp.~39--48, 2015.
+
+\bibitem{oberweger2015hands}
+M.~Oberweger, P.~Wohlhart, and V.~Lepetit, ``Hands deep in deep learning for
+  hand pose estimation,'' {\em arXiv preprint arXiv:1502.06807}, 2015.
+
+\bibitem{vrep}
+M.~F. E.~Rohmer, S. P. N.~Singh, ``V-rep: a versatile and scalable robot
+  simulation framework,'' in {\em Proc. of The International Conference on
+  Intelligent Robots and Systems (IROS)}, 2013.
+
+\bibitem{tensorflow2015-whitepaper}
+M.~Abadi, A.~Agarwal, P.~Barham, E.~Brevdo, Z.~Chen, C.~Citro, G.~S. Corrado,
+  A.~Davis, J.~Dean, M.~Devin, S.~Ghemawat, I.~Goodfellow, A.~Harp, G.~Irving,
+  M.~Isard, Y.~Jia, R.~Jozefowicz, L.~Kaiser, M.~Kudlur, J.~Levenberg,
+  D.~Man\'{e}, R.~Monga, S.~Moore, D.~Murray, C.~Olah, M.~Schuster, J.~Shlens,
+  B.~Steiner, I.~Sutskever, K.~Talwar, P.~Tucker, V.~Vanhoucke, V.~Vasudevan,
+  F.~Vi\'{e}gas, O.~Vinyals, P.~Warden, M.~Wattenberg, M.~Wicke, Y.~Yu, and
+  X.~Zheng, ``{TensorFlow}: Large-scale machine learning on heterogeneous
+  systems,'' 2015.
+\newblock Software available from tensorflow.org.
+
+\bibitem{ros}
+M.~Quigley, K.~Conley, B.~P. Gerkey, J.~Faust, T.~Foote, J.~Leibs, R.~Wheeler,
+  and A.~Y. Ng, ``Ros: an open-source robot operating system,'' in {\em ICRA
+  Workshop on Open Source Software}, 2009.
+
+\end{thebibliography}

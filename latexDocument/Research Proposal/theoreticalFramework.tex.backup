@@ -10,10 +10,10 @@ this method will always explore, but takes the actual action output as a mean an
 To improve learning extra parameters will be added to the CACLA algorithm to test their performance. For example we can look at the insights from the Deep Q Network (DQN) \cite{mnih2015human}. DQN shows for example that it is possible for 
 large, non-linear networks to become robust and stable by training networks off-policy by using samples from a replay buffer to minimize the correlations between samples. In the 'Continues control with deep reinforcement learning' paper
 \cite{lillicrap2015continuous}, that also uses a actor-critic network for learning continues control, they make use of 
-batch normalization \cite{ioffe2015batch}, a recent advance in deep learning. Also methods like dropout \cite{srivastava2014dropout} to reduce overfitting will be tested. \\
+batch normalization [REF], a recent advance in deep learning. Also methods like dropout [REF] to reduce overfitting will be tested. \\
 For the perception part, object localization, we will make use of CNNs. CNNs don't learn features directly from the input image but they learn kernels that each can represent a feature. CNN are successfully used in 
-object recognition and speech recognition \cite{sainath2015deep}. In this project we want to use CNNs to determine the location of an object that the arm can grasp. \cite{oberweger2015hands} Show that they can determine the 3D pose of a hand by using 
-a depth image and CNNs, we can use this information to determine the 3D location of an object.
+object recognition [REF] and speech recognition [REF]. In this project we want to use CNNs to determine the location of an object that the arm can grasp. [REF] show that they can determine the 3D pose of a hand by using 
+a depth image and CNNs.
 
  
  %- explain RL *

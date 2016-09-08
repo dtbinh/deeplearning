@@ -1,0 +1,88 @@
+@article{robocup,
+  title={RoboCup@ Home: Scientific competition and benchmarking for domestic service robots},
+  author={Wisspeintner, Thomas and Van Der Zant, Tijn and Iocchi, Luca and Schiffer, Stefan},
+  journal={Interaction Studies},
+  volume={10},
+  number={3},
+  pages={392--426},
+  year={2009},
+  publisher={John Benjamins Publishing Company}
+}
+
+@inproceedings{rockin,
+  title={The rockin@ home challenge},
+  author={Schneider, Sven and Hegger, Frederik and Ahmad, Aamir and Awaad, Iman and Amigoni, Francesco and Berghofer, Jakob and Bischoff, Rainer and Bonarini, Andrea and Dwiputra, Rhama and Fontana, Giulio and others},
+  booktitle={ISR/Robotik 2014; 41st International Symposium on Robotics; Proceedings of},
+  pages={1--7},
+  year={2014},
+  organization={VDE}
+}
+
+@article{ompl,
+    Author = {Ioan A. {\c{S}}ucan and Mark Moll and Lydia E. Kavraki},
+    Doi = {10.1109/MRA.2012.2205651},
+    Journal = {{IEEE} Robotics \& Automation Magazine},
+    Month = {December},
+    Number = {4},
+    Pages = {72--82},
+    Title = {The {O}pen {M}otion {P}lanning {L}ibrary},
+    Note = {http://ompl.kavrakilab.org},
+    Volume = {19},
+    Year = {2012}
+}
+
+@inproceedings{cnn,
+  title={Imagenet classification with deep convolutional neural networks},
+  author={Krizhevsky, Alex and Sutskever, Ilya and Hinton, Geoffrey E},
+  booktitle={Advances in neural information processing systems},
+  pages={1097--1105},
+  year={2012}
+}
+
+@ARTICLE{markov,
+    author = "Richard Bellman",
+     title = "A Markovian Decision Process",
+   journal = "Indiana Univ. Math. J.",
+  fjournal = "Indiana University Mathematics Journal",
+    volume = 6,
+      year = 1957,
+     issue = 4,
+     pages = "679--684",
+      issn = "0022-2518",
+     coden = "IUMJAB",
+   mrclass = "",
+}
+
+@inproceedings{van2007reinforcement,
+  title={Reinforcement learning in continuous action spaces},
+  author={Van Hasselt, Hado and Wiering, Marco A},
+  booktitle={2007 IEEE International Symposium on Approximate Dynamic Programming and Reinforcement Learning},
+  pages={272--279},
+  year={2007},
+  organization={IEEE}
+}
+
+@article{mnih2015human,
+  title={Human-level control through deep reinforcement learning},
+  author={Mnih, Volodymyr and Kavukcuoglu, Koray and Silver, David and Rusu, Andrei A and Veness, Joel and Bellemare, Marc G and Graves, Alex and Riedmiller, Martin and Fidjeland, Andreas K and Ostrovski, Georg and others},
+  journal={Nature},
+  volume={518},
+  number={7540},
+  pages={529--533},
+  year={2015},
+  publisher={Nature Publishing Group}
+}
+
+@article{lillicrap2015continuous,
+  title={Continuous control with deep reinforcement learning},
+  author={Lillicrap, Timothy P and Hunt, Jonathan J and Pritzel, Alexander and Heess, Nicolas and Erez, Tom and Tassa, Yuval and Silver, David and Wierstra, Daan},
+  journal={arXiv preprint arXiv:1509.02971},
+  year={2015}
+}
+
+@article{ioffe2015batch,
+  title={Batch normalization: Accelerating deep network training by reducing internal covariate shift},
+  author={Ioffe, Sergey and Szegedy, Christian},
+  journal={arXiv preprint arXiv:1502.03167},
+  year={2015}
+}

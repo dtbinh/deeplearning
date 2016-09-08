@@ -1,14 +1,36 @@
 \section{Methods}
+To control the arm we will make use of the CACLA algorithm. Where to goal is to be able to grasp an object, first we will start with getting the end-effector in a correct position and orientation. This will provide a 
+good insight in the parameters like neural network size, learning rates, exploration, and rewards. In this stage we can already look at different architectures for controlling the arm. Instead of having one network to
+control all the joints in a robotic arm, we could have N amount of networks to either control one joint per network, or multiple joints per network. The idea behind this is that the first joints on a robotic arm will 
+greatly influence the position of the end-effector, where the last joints will have less influence on the final position, but will be mostly used for orientation and small adjustments of the end-effector. With a multi network
+architecture we can also define different reward functions which might help to decrease the training time and or accuracy. \\
+The next step is to actually grasp an object, this includes using the fingers of the end-effector. Again we can look at different architectures, can one network do all tasks; move to the correct position and grasp, or should
+there be two networks; one for bringing the end-effector close to the object, and one for the actual grasping part. \\
+The next stage is to look at the perception part, using CNNs to locate objects. CNNs are mostly used for object recognition, but because CNNs can find many different features, specially in deep CNNs, it should be possible to 
+extract 3D positional information from them. \\
+The next step is to combine the controller network and the perception network so that it is possible to grasp an object that is being seen by a camera. Again we can look at different architectures, namely two separate
+networks, where the CNN will give a goal location of where the object is located, which is the input for the controller network, which can then grasp the object. An other option would be to create one large network where the 
+controller network will be put on top of a (pre-trained) CNN network, then only the controller network will be trained, but its input will be the output of the final CNN layer. \\
+For this project we will mostly make use of simulation, but with a final goal that it should work on a real robotic arm. The real robotic arm is a Kinova Mico arm \footnote{Mico arm: \url{http://www.kinovarobotics.com/service-robotics/products/robot-arms/}}, with 6 Degrees of Freedom (DoF), and a 2 finger gripper. 
+For the simulation environment we will make use of V-REP \cite{vrep}, this simulator already contains the Mico arm, but it also has other robotic arms available. The possible problem with the Mico arm is that the last 3 joints
+are in a weirdly bended structure, which may create difficulties for the control network to train correctly. We will therefore also look at different robotic arms like for example the UR10 \footnote{UR10: \url{http://www.universal-robots.com/nl/producten/ur10-robot/}}, and 
+KUKA LBR iiwa 14 R820 \footnote{KUKA: \url{http://www.kuka-robotics.com/en/products/industrial_robots/sensitiv/lbr_iiwa_14_r820/} } to see if the design of a robotic arm has any influence on the training of the control network. \\
+To create the programs we will mostly make use of Python, and a bit of C++. For creating the neural networks we make use of Tensorflow \cite{tensorflow2015-whitepaper}, Tensorflow is a framework that makes it easy to create different kind of 
+networks, and automatically use the GPU to train them. Since the framework works best in Python, the rest of the agent will also be programmed in Python. The connection to V-REP is also possible 
+in Python. For the connection to the real robotic arm C++ is required. Although most software for controlling the arm is already written. For the perception of the real world a Kinect V2 camera will be used. This camera
+provides 1080p images, and also 3D information. To receive images from the camera and to control the arm via Python the Robotic Operating System (ROS) \cite{ros} will be used. 
 
-- how to use CACLA
-- how to use CNN
-- Simulation / Real robot
-- Control Velocity / Current robot limitations
-- programming languages
+
+%COMPARE CACLA WITH DDPG!
+%- how to use CACLA *
+%- how to use CNN *
+%- Simulation / Real robot *
+%- Control Velocity / Current robot limitations *
+%- programming languages *
 
 
-Reinforcement learning problems are often solved within a discrete action space. But to control a robotic arm continues actions are required. This is the purpose of the CALCA
-algorithm, it allows to learn in the continues action space.
+%Reinforcement learning problems are often solved within a discrete action space. But to control a robotic arm continues actions are required. This is the purpose of the CALCA
+% algorithm, it allows to learn in the continues action space.
 
 
 %The main method for reinforcement learning for the control of the arm will be the CACLA algorithm. The main method for the perception part will be CNN. 

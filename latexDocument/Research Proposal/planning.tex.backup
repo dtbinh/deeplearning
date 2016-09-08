@@ -1,0 +1,31 @@
+\section{Planning}
+
+\textbf{September}
+\begin{itemize}
+  \item Finalize research proposal
+  \item Extended literate research (Batch normalization, drop-out, soft-target updates)
+  \item Setup for real world testing
+\end{itemize} 
+- Setup real experimental setup (camera position)
+- Control network
+ - Go to a single position
+ - Grasp object using manual input
+ - Different architectures
+ - Different Arms
+ - Writing
+
+- Perception
+  - Learn 3D localization for simple objects
+  - Train in simulation, works in real world? 
+  - Train real world dataset
+  - Writing
+  
+- Total network
+  - Combine Perception and Control network
+  - Test in simulation, possible on different arms (First use best arm to train for found in Control network part)
+  - Test in real-world, Mico arm. 
+  - Fine-tuning step from simulation to real world?
+  - Possible training, using object locater (pointcloud based approach for object clustering and location, BORG stuff)
+  - Writing
+  
+- Finish Thesis
