@@ -7,7 +7,7 @@ architecture we can also define different reward functions which might help to d
 The next step is to actually grasp an object, this includes using the fingers of the end-effector. Again we can look at different architectures, can one network do all tasks; move to the correct position and grasp, or should
 there be two networks; one for bringing the end-effector close to the object, and one for the actual grasping part. \\
 The next stage is to look at the perception part, using CNNs to locate objects. CNNs are mostly used for object recognition, but because CNNs can find many different features, specially in deep CNNs, it should be possible to 
-extract 3D positional information from them. \\
+extract 3D positional information from them. We will look at different input features like RGB, RGBD, and Pointcloud data. \\
 The next step is to combine the controller network and the perception network so that it is possible to grasp an object that is being seen by a camera. Again we can look at different architectures, namely two separate
 networks, where the CNN will give a goal location of where the object is located, which is the input for the controller network, which can then grasp the object. An other option would be to create one large network where the 
 controller network will be put on top of a (pre-trained) CNN network, then only the controller network will be trained, but its input will be the output of the final CNN layer. \\

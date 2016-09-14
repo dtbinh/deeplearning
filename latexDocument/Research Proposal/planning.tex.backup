@@ -1,31 +1,77 @@
 \section{Planning}
 
-\textbf{September}
+\textbf{September (starting at the end of September)}
 \begin{itemize}
   \item Finalize research proposal
   \item Extended literate research (Batch normalization, drop-out, soft-target updates)
-  \item Setup for real world testing
+  \item Setup for real world testing (Arm and Camera positions)
+  \item Setup computers for running experiments and scripts to run remotely  
 \end{itemize} 
-- Setup real experimental setup (camera position)
-- Control network
- - Go to a single position
- - Grasp object using manual input
- - Different architectures
- - Different Arms
- - Writing
+\textbf{October}
+\begin{itemize}
+  \item Framework for control network, including different architecture setups (without optimizations like batch normalization, etc)
+  \item Framework for testing the control network, in both simulation and on the real arm (Mico arm only)  
+\end{itemize}
+\textbf{November}
+\begin{itemize}
+  \item Start with experiments for control network (Learn to go to position)
+  \item Extend Framework with optimizations (Batch normalization, drop-out, etc)
+  \item Experiments with optimizations (Learn to go to position), different architectures, different arms, grasping
+\end{itemize}
+\textbf{December}
+\begin{itemize}
+  \item Finalize control network fine-tuning, should have a working network for grasping objects based on manual input.
+\end{itemize}
+\textbf{January}
+\begin{itemize}
+  \item Extend framework to work with CNN for perception part
+  \item Experiments with getting 3D position of objects, test if simulation training works in real world
+  \item Create large dataset of objects (script for creating objects in simulation, or create real world dataset)
+  \item Experiments with RGB, RGBD, and Pointcloud as input
+\end{itemize}
+\textbf{February}
+\begin{itemize}
+  \item Combine Perception network with Control network
+  \item Experiment with different architectures, different arms
+  \item Finalize experiments with complete working system so that real arm can grasp objects
+\end{itemize}
+\textbf{March}
+\begin{itemize}
+  \item Finalize experiments with different arms grasping objects in simulation 
+  \item Extra room for experiments in case needed
+  \item Start writing final version Thesis
+\end{itemize}
+\textbf{April}
+\begin{itemize}
+  \item Finalize Thesis
+\end{itemize}
 
-- Perception
-  - Learn 3D localization for simple objects
-  - Train in simulation, works in real world? 
-  - Train real world dataset
-  - Writing
+
+
+
+
+
+
+%- Setup real experimental setup (camera position) *
+%- Control network
+% - Go to a single position
+% - Grasp object using manual input
+% - Different architectures
+% - Different Arms
+% - Writing
+
+%- Perception
+%  - Learn 3D localization for simple objects
+%  - Train in simulation, works in real world? 
+%  - Train real world dataset
+%  - Writing
   
-- Total network
-  - Combine Perception and Control network
-  - Test in simulation, possible on different arms (First use best arm to train for found in Control network part)
-  - Test in real-world, Mico arm. 
-  - Fine-tuning step from simulation to real world?
-  - Possible training, using object locater (pointcloud based approach for object clustering and location, BORG stuff)
-  - Writing
+%- Total network
+%  - Combine Perception and Control network
+%  - Test in simulation, possible on different arms (First use best arm to train for found in Control network part)
+%  - Test in real-world, Mico arm. 
+%  - Fine-tuning step from simulation to real world?
+%  - Possible training, using object locater (pointcloud based approach for object clustering and location, BORG stuff)
+%  - Writing
   
-- Finish Thesis
+% - Finish Thesis
