@@ -1,16 +1,23 @@
 \section{Methods}
-To control the arm we will make use of the CACLA algorithm. Where to goal is to be able to grasp an object, first we will start with getting the end-effector in a correct position and orientation. This will provide a 
+To control the arm we will make use of the CACLA algorithm. Where the goal is to be able to grasp an object, first we will start with getting the end-effector in a correct position and orientation. This will provide a 
 good insight in the parameters like neural network size, learning rates, exploration, and rewards. In this stage we can already look at different architectures for controlling the arm. Instead of having one network to
-control all the joints in a robotic arm, we could have N amount of networks to either control one joint per network, or multiple joints per network. The idea behind this is that the first joints on a robotic arm will 
+control all the joints in a robotic arm, we could have N networks to either control one joint per network, or multiple joints per network. The idea behind this is that the first joints on a robotic arm will 
 greatly influence the position of the end-effector, where the last joints will have less influence on the final position, but will be mostly used for orientation and small adjustments of the end-effector. With a multi network
 architecture we can also define different reward functions which might help to decrease the training time and or accuracy. \\
 The next step is to actually grasp an object, this includes using the fingers of the end-effector. Again we can look at different architectures, can one network do all tasks; move to the correct position and grasp, or should
 there be two networks; one for bringing the end-effector close to the object, and one for the actual grasping part. \\
 The next stage is to look at the perception part, using CNNs to locate objects. CNNs are mostly used for object recognition, but because CNNs can find many different features, specially in deep CNNs, it should be possible to 
-extract 3D positional information from them. We will look at different input features like RGB, RGBD, and Pointcloud data. \\
-The next step is to combine the controller network and the perception network so that it is possible to grasp an object that is being seen by a camera. Again we can look at different architectures, namely two separate
-networks, where the CNN will give a goal location of where the object is located, which is the input for the controller network, which can then grasp the object. An other option would be to create one large network where the 
-controller network will be put on top of a (pre-trained) CNN network, then only the controller network will be trained, but its input will be the output of the final CNN layer. \\
+extract 3D positional information from them. We will look at different input features like RGB, RGBD (D stands for depth), and Pointcloud data. To extract the ground truth for training the position we can make use of the 
+simulation, we can set the position of an object using code, so we know the exact 3D pose of the object, but we can also use the Pointcloud data to get the 3D points that belong to an object by using segmentation and clustering, 
+from there we can get either the min and max values of the x,y,z points, or get the center point of the object in 3D space. We can make use of transformations to transform the camera's coordinates system to the arm's coordinates system. 
+In this case we can assume that there is only one object in the scene that can be grasped, since the network has a fixed number of outputs and is not able to give more than one location. There could be more objects in the scene
+but these are objects that the arm should avoid and are assumed to be static. \\
+The next step is to combine the controller network and the perception network so that it is possible to grasp an object that is being seen by a camera. Two different architectures will be tested, in one architecture the CNN will
+be directly connected to the control network, in this case the CNN will recognize a single object that it needs to grasp and also take into account the rest of the environment for obstacle avoidance. The second architecture will be
+the same as the previous, a CNN connected to the control network, but the control network will have extra inputs namely the x, y, z coordinate of the object that needs to be grasped. This coordinate can either come from the current
+CNN that is connected to the control network, or can come from an external object recognizer, which will allow the network to grasp objects from a scene with multiple objects. In the last case the CNN doesn't need to perform 
+object localization, but it still needs to know about the objects that it can grasp, and which objects it should completely avoid. \\
+For the inverse kinematic controller we will make use of MoveIt, this package can calculate a path and grasping motions for a robotic arm, it also can take into account collision avoidance based on camera input.
 For this project we will mostly make use of simulation, but with a final goal that it should work on a real robotic arm. The real robotic arm is a Kinova Mico arm \footnote{Mico arm: \url{http://www.kinovarobotics.com/service-robotics/products/robot-arms/}}, with 6 Degrees of Freedom (DoF), and a 2 finger gripper. 
 For the simulation environment we will make use of V-REP \cite{vrep}, this simulator already contains the Mico arm, but it also has other robotic arms available. The possible problem with the Mico arm is that the last 3 joints
 are in a weirdly bended structure, which may create difficulties for the control network to train correctly. We will therefore also look at different robotic arms like for example the UR10 \footnote{UR10: \url{http://www.universal-robots.com/nl/producten/ur10-robot/}}, and 
@@ -21,6 +28,9 @@ in Python. For the connection to the real robotic arm C++ is required. Although 
 provides 1080p images, and also 3D information. To receive images from the camera and to control the arm via Python the Robotic Operating System (ROS) \cite{ros} will be used. 
 
 
+%Again we can look at different architectures, namely two separate
+%networks, where the CNN will give a goal location of where the object is located, which is the input for the controller network, which can then grasp the object. Another option would be to create one large network where the 
+%controller network will be put on top of a (pre-trained) CNN network, then only the controller network will be trained, but its input will be the output of the final CNN layer.
 %COMPARE CACLA WITH DDPG!
 %- how to use CACLA *
 %- how to use CNN *

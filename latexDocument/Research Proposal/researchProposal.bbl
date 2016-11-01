@@ -57,6 +57,12 @@ T.~N. Sainath, B.~Kingsbury, G.~Saon, H.~Soltau, A.-r. Mohamed, G.~Dahl, and
   B.~Ramabhadran, ``Deep convolutional neural networks for large-scale speech
   tasks,'' {\em Neural Networks}, vol.~64, pp.~39--48, 2015.
 
+\bibitem{lin2015deep}
+D.~Lin, X.~Shen, C.~Lu, and J.~Jia, ``Deep lac: Deep localization, alignment
+  and classification for fine-grained recognition,'' in {\em Proceedings of the
+  IEEE Conference on Computer Vision and Pattern Recognition}, pp.~1666--1674,
+  2015.
+
 \bibitem{oberweger2015hands}
 M.~Oberweger, P.~Wohlhart, and V.~Lepetit, ``Hands deep in deep learning for
   hand pose estimation,'' {\em arXiv preprint arXiv:1502.06807}, 2015.
