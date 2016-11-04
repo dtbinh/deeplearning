@@ -17,6 +17,19 @@ I.~A. {\c{S}}ucan, M.~Moll, and L.~E. Kavraki, ``The {O}pen {M}otion {P}lanning
   pp.~72--82, December 2012.
 \newblock http://ompl.kavrakilab.org.
 
+\bibitem{gu2016deep}
+S.~Gu, E.~Holly, T.~Lillicrap, and S.~Levine, ``Deep reinforcement learning for
+  robotic manipulation,'' {\em arXiv preprint arXiv:1610.00633}, 2016.
+
+\bibitem{abend1982human}
+W.~Abend, E.~Bizzi, and P.~Morasso, ``Human arm trajectory formation.,'' {\em
+  Brain: a journal of neurology}, vol.~105, no.~Pt 2, pp.~331--348, 1982.
+
+\bibitem{feix2014analysis}
+T.~Feix, I.~M. Bullock, and A.~M. Dollar, ``Analysis of human grasping
+  behavior: Object characteristics and grasp type,'' {\em IEEE transactions on
+  haptics}, vol.~7, no.~3, pp.~311--323, 2014.
+
 \bibitem{cnn}
 A.~Krizhevsky, I.~Sutskever, and G.~E. Hinton, ``Imagenet classification with
   deep convolutional neural networks,'' in {\em Advances in neural information
